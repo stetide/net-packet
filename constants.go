@@ -1,5 +1,7 @@
 package main
 
+// EtherProto represents Ethernet Protocols
+// export EtherProto
 type EtherProto int
 
 const (
