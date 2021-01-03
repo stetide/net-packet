@@ -129,7 +129,7 @@ func NewSocket(protocol EtherProto) (Socket, error) {
 }
 
 // SetPromisc enables or disables promiscuos mode on s
-func (s Socket) SetPromisc(iface net.Interface, promisc bool) error {
+func (s Socket) SetPromisc(iface *net.Interface, promisc bool) error {
 	if promisc {
 		if int(C.enable_promisc(C.int(s), C.int(iface.Index))) == -1 {
 			return errors.New("error on set_promisc")
