@@ -1,4 +1,4 @@
-package main
+package packet
 
 /*
 #include <sys/socket.h>
@@ -117,11 +117,9 @@ import (
 )
 
 // Socket handler
-// export Socket
 type Socket int
 
 // NewSocket creates new packet socket
-// export NewSocket
 func NewSocket(protocol EtherProto) (Socket, error) {
 	sock := int(C.create_socket(C.int(protocol)))
 	if sock == -1 {
@@ -131,7 +129,6 @@ func NewSocket(protocol EtherProto) (Socket, error) {
 }
 
 // SetPromisc enables or disables promiscuos mode on s
-// export SetPromisc
 func (s Socket) SetPromisc(iface net.Interface, promisc bool) error {
 	if promisc {
 		if int(C.enable_promisc(C.int(s), C.int(iface.Index))) == -1 {
@@ -146,7 +143,6 @@ func (s Socket) SetPromisc(iface net.Interface, promisc bool) error {
 }
 
 // SetTimeout sets a time out for send and recevie
-// export SetTimeout
 func (s Socket) SetTimeout(timeout time.Duration) error {
 	usecs := timeout.Round(time.Microsecond).Microseconds()
 	if int(C.set_timeout(C.int(s), C.long(usecs))) == -1 {
@@ -156,7 +152,6 @@ func (s Socket) SetTimeout(timeout time.Duration) error {
 }
 
 // SetSendTimeout sets a timeout on send
-// export SetSendTimeout
 func (s Socket) SetSendTimeout(timeout time.Duration) error {
 	usecs := timeout.Round(time.Microsecond).Microseconds()
 	if int(C.set_send_timeout(C.int(s), C.long(usecs))) == -1 {
@@ -166,7 +161,6 @@ func (s Socket) SetSendTimeout(timeout time.Duration) error {
 }
 
 // SetRecvTimeout sets a timeout on recv
-// export SetRecvTimeout
 func (s Socket) SetRecvTimeout(timeout time.Duration) error {
 	usecs := timeout.Round(time.Microsecond).Microseconds()
 	if int(C.set_recv_timeout(C.int(s), C.long(usecs))) == -1 {
@@ -175,8 +169,7 @@ func (s Socket) SetRecvTimeout(timeout time.Duration) error {
 	return nil
 }
 
-// Close closes the socket
-// export Close
+// Close closes the socke
 func (s Socket) Close() error {
 	if int(C.close_socket(C.int(s))) == -1 {
 		return errors.New("error on close_socket")
@@ -185,7 +178,6 @@ func (s Socket) Close() error {
 }
 
 // Read reads socket data into buf
-// export Read
 func (s Socket) Read(buf []byte) (int, error) {
 	n, _, err := syscall.Recvfrom(int(s), buf, 0)
 	return n, err
@@ -193,10 +185,7 @@ func (s Socket) Read(buf []byte) (int, error) {
 
 // Recv works like Read but lets you pass flags
 // flags can be found in the syscall package
-// export Recv
 func (s Socket) Recv(buf []byte, flags int) (int, error) {
 	n, _, err := syscall.Recvfrom(int(s), buf, flags)
 	return n, err
 }
-
-func main() {}
